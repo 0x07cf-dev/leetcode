@@ -1,11 +1,11 @@
 # This will be my Python playground. I can only learn syntax by doing.
 
+from collections import deque
 from typing import List, Optional
 import math
 
+
 # Definition for singly-linked list.
-
-
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -20,6 +20,7 @@ class TreeNode:
         self.right = right
 
 
+# No need to indent code pasted to and from leetcode with the Solution class
 class Solution:
     # 1. Two Sum
     def twoSum(self, nums: List[int], target: int) -> List[int]:
@@ -235,8 +236,84 @@ class Solution:
             return None
         return TreeNode(val=nums[(i + j) // 2], left=self.makeBST(nums, i, (i + j) // 2), right=self.makeBST(nums, ((i + j) // 2) + 1, j))
 
+    # 225. Implement Stack using Queues
+    class MyStack:
 
-def main():
+        def __init__(self):
+            self.queue = deque()
+
+        def push(self, x: int) -> None:
+            self.queue.append(x)
+
+            n = self.size()
+            if n > 1:
+                for _ in range(n - 1):
+                    self.queue.append(self.queue.popleft())
+
+        def pop(self) -> int:
+            return self.queue.popleft()
+
+        def top(self) -> int:
+            return self.queue[0]
+
+        def size(self) -> int:
+            return len(self.queue)
+
+        def empty(self) -> bool:
+            return self.size() < 1
+
+    # 232. Implement Queue using Stacks
+    class MyQueue:
+
+        def __init__(self):
+            self.stack = []
+            self.s = []
+
+        def push(self, x: int) -> None:
+            while self.stack:
+                self.s.append(self.stack.pop())
+
+            self.s.append(x)
+            while self.s:
+                self.stack.append(self.s.pop())
+
+        def pop(self) -> int:
+            return self.stack.pop()
+
+        def peek(self) -> int:
+            return self.stack[-1]
+
+        def empty(self) -> bool:
+            return not self.stack
+
+    # 290. Word Pattern
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        # split s into tokens
+        # iterate over pattern, construct dictionary of matches to check consistency
+        words = s.split()
+        if len(words) != len(pattern):
+            return False
+
+        D = {}
+        for i in range(len(pattern)):
+            ch = pattern[i]
+            word = words[i]
+
+            if not ch in D:
+                # character is new, but value already exists = no match
+                if word in D.values():
+                    return False
+
+                D[ch] = word
+            else:
+                # we've already met this letter, so let's check if it's consistent
+                if word != D[ch]:
+                    return False
+
+        return True
+
+
+if __name__ == "__main__":
     sol = Solution()
 
     n26 = sol.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4])
@@ -248,8 +325,6 @@ def main():
     n66 = sol.plusOne([1, 9, 9, 7, 9])
     print(f"n66: {n66}")
 
-    nums1, m, nums2, n = [2, 0], 1, [1], 1
-    sol.merge(nums1, m, nums2, n)
     nums1, m, nums2, n = [1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3
     sol.merge(nums1, m, nums2, n)
     print(f"n88: {nums1}")
@@ -257,6 +332,15 @@ def main():
     n108 = sol.sortedArrayToBST([-10, -3, 0, 5, 9])
     print(f"n108: {n108}")
 
+    n225 = Solution.MyStack()
+    n225.push(1)
+    n225.push(2)
+    n225.push(3)
+    print(n225.queue)
+    print("Top of the stack:", n225.top())
+    print("Stack size:", n225.size())
 
-if __name__ == "__main__":
-    main()
+    print("Pop:", n225.pop())
+    print("Top of the stack after pop:", n225.top())
+    print("Is the stack empty?", n225.empty())
+    print(n225.queue)
