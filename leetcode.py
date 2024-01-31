@@ -153,6 +153,21 @@ class Solution:
 
         return len(nums)
 
+    # 28. Find the Index of the First Occurrence in a String
+    def strStr(self, haystack: str, needle: str) -> int:
+        n = len(haystack)
+        m = len(needle)
+
+        for i in range(n):
+            if haystack[i] == needle[0]:
+                j = 0
+                while i + j < n and haystack[i + j] == needle[j]:
+                    j += 1
+                    if j >= m:
+                        return i
+
+        return -1
+
     # 35. Search Insert Position (O(log n))
     def searchInsert(self, nums: List[int], target: int) -> int:
         # binary search
@@ -203,6 +218,51 @@ class Solution:
 
         # array of nines becomes array of zeroes, so prepend a one
         return [1] + digits
+
+    # 67. Add Binary
+    def addBinary(self, a: str, b: str) -> str:
+        i = len(a) - 1
+        j = len(b) - 1
+        k = 0
+        res = []
+
+        while i >= 0 or j >= 0 or k:
+            if i >= 0:
+                k += int(a[i])
+                i -= 1
+
+            if j >= 0:
+                k += int(b[j])
+                j -= 1
+
+            res.insert(0, k % 2)
+            k //= 2
+
+        return "".join(res)
+
+    # 69. sqrt(x)
+    def mySqrt(self, x: int) -> int:
+        # binary search from 0 to x
+        if x < 0:
+            return "i"
+
+        def sq(n):
+            return n * n
+
+        left, right = 0, x
+
+        while sq((left + right) // 2) != x:
+            mid = (left + right) // 2
+
+            if sq(mid) > x:
+                right = mid - 1
+            else:
+                left = mid + 1
+
+            if left > right:
+                return right
+
+        return (left + right) // 2
 
     # 88. Merge Sorted Array
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
@@ -324,6 +384,15 @@ if __name__ == "__main__":
 
     n66 = sol.plusOne([1, 9, 9, 7, 9])
     print(f"n66: {n66}")
+
+    n67 = sol.addBinary("1010", "11001")
+    print(n67)
+
+    n69 = sol.mySqrt(16)
+    n69 = sol.mySqrt(8)
+    n69 = sol.mySqrt(4)
+    n69 = sol.mySqrt(2)
+    print(f"n69: {n69}")
 
     nums1, m, nums2, n = [1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3
     sol.merge(nums1, m, nums2, n)
