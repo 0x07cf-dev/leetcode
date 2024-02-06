@@ -2,7 +2,6 @@
 
 from collections import deque
 from typing import List, Optional
-import math
 
 
 # Definition for singly-linked list.
@@ -30,6 +29,36 @@ class Solution:
             if mi in hashmap:
                 return [i, hashmap[mi]]
             hashmap[nums[i]] = i
+
+    # 2. Add Two Numbers
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        i, j, k = 0, 0, 0
+
+        # find sum
+        while l1 or l2:
+            if l1:
+                k += l1.val * (10 ** i)
+                l1 = l1.next
+                i += 1
+
+            if l2:
+                k += l2.val * (10 ** j)
+                l2 = l2.next
+                j += 1
+
+        k = int(k)
+
+        # convert to array
+        head = h = ListNode()
+        while k > 0:
+            h.val = k % 10
+            k //= 10
+
+            if k > 0:
+                h.next = ListNode()
+                h = h.next
+
+        return head
 
     # 9. Palindrome Number
     def isPalindrome(self, x: int) -> bool:
@@ -287,6 +316,68 @@ class Solution:
                 j -= 1
             k -= 1
 
+    # 94. Binary Tree Inorder Traversal
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        visited = []
+
+        def dfs(r: Optional[TreeNode]):
+            if r:
+                dfs(r.left)
+                visited.append(r.val)
+                dfs(r.right)
+
+        dfs(root)
+        return visited
+
+    def iterInorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        visited = []
+        stack = []
+
+        while root or stack:
+            while root:
+                stack.append(root)
+                root = root.left
+
+            root = stack.pop()
+            visited.append(root.val)
+            root = root.right
+
+        return visited
+
+    # 98. Validate Binary Search Tree
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return []
+
+        stack = []
+        previous = None
+
+        while root or stack:
+            while root:
+                stack.append(root)
+                root = root.left
+
+            root = stack.pop()
+            if previous and previous.val >= root.val:
+                return False
+            previous = root
+            root = root.right
+
+        return True
+
+    # 101. Symmetric Tree
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        def dfs(left, right):
+            if not left or not right:
+                return True
+            if left or right:
+                return False
+
+            return left.val == right.val and dfs(left.left, right.right) and dfs(left.right, right.left)
+
     # 108. Convert Sorted Array to Binary Search Tree
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
         return self.makeBST(nums, 0, len(nums))
@@ -371,6 +462,36 @@ class Solution:
                     return False
 
         return True
+
+    # TODO tomorrow: 705. Design HashSet
+    class MyHashSet:
+
+        def __init__(self):
+            pass
+
+        def add(self, key: int) -> None:
+            pass
+
+        def remove(self, key: int) -> None:
+            pass
+
+        def contains(self, key: int) -> bool:
+            pass
+
+    # TODO tomorrow: 706. Design HashMap
+    class MyHashMap:
+
+        def __init__(self):
+            pass
+
+        def put(self, key: int, value: int) -> None:
+            pass
+
+        def get(self, key: int) -> int:
+            pass
+
+        def remove(self, key: int) -> None:
+            pass
 
 
 if __name__ == "__main__":
