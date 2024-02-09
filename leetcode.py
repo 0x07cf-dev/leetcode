@@ -499,7 +499,10 @@ class Solution:
 
 
 if __name__ == "__main__":
-    # hey chatgpt could you please write test cases
+    ''' Hey chatgpt, could you please write test cases for me? 😍
+        This crap will have to stay here until I sort problems by tag/topic.
+        TODO: Do so before this file grows too much. '''
+
     sol = Solution()
 
     n26 = sol.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4])
