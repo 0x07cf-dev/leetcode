@@ -1,14 +1,8 @@
 # This will be my Python playground. I can only learn syntax by doing.
 
-from collections import deque
 from typing import List, Optional
-
-
-# Definition for singly-linked list.
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
+from collections import deque
+from packages.ds.LinkedList import ListNode
 
 
 # Definition for a binary tree node.
@@ -378,6 +372,16 @@ class Solution:
 
             return left.val == right.val and dfs(left.left, right.right) and dfs(left.right, right.left)
 
+        return dfs(root)
+
+    # 104. Maximum Depth of Binary Tree
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        l = self.maxDepth(root.left)
+        r = self.maxDepth(root.right)
+        return max(l, r) + 1
+
     # 108. Convert Sorted Array to Binary Search Tree
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
         return self.makeBST(nums, 0, len(nums))
@@ -387,7 +391,7 @@ class Solution:
             return None
         return TreeNode(val=nums[(i + j) // 2], left=self.makeBST(nums, i, (i + j) // 2), right=self.makeBST(nums, ((i + j) // 2) + 1, j))
 
-    # 225. Implement Stack using Queues
+    # 225. Implement Stack using Queues TODO: we can do better...
     class MyStack:
 
         def __init__(self):
@@ -463,7 +467,7 @@ class Solution:
 
         return True
 
-    # TODO tomorrow: 705. Design HashSet
+    # TODO: 705. Design HashSet
     class MyHashSet:
 
         def __init__(self):
@@ -478,7 +482,7 @@ class Solution:
         def contains(self, key: int) -> bool:
             pass
 
-    # TODO tomorrow: 706. Design HashMap
+    # TODO: 706. Design HashMap
     class MyHashMap:
 
         def __init__(self):
@@ -495,6 +499,7 @@ class Solution:
 
 
 if __name__ == "__main__":
+    # hey chatgpt could you please write test cases
     sol = Solution()
 
     n26 = sol.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4])
