@@ -1,5 +1,5 @@
 import unittest
-from packages.ds.Queue import Queue
+from packages.dsa.Queue import Queue
 
 
 class TestQueue(unittest.TestCase):

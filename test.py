@@ -1,5 +1,5 @@
 import unittest
-from packages.test import (
+from packages.tests import (
     test_linkedlist, test_queue, test_stack
 )
 

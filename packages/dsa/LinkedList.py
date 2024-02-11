@@ -4,21 +4,12 @@ T = TypeVar("T")
 
 # Definition for singly-linked list.
 class ListNode(Generic[T]):
-    def __init__(self, val: T, next=None):
+    def __init__(self, val: T = 0, next: Optional["ListNode[T]"] = None):
         self.val = val
         self.next = next
-
-
-# Definition for doubly-linked list.
-class DoubleListNode(Generic[T]):
-    def __init__(self, val: T, next=None, prev=None):
-        self.val = val
-        self.next = next
-        self.prev = prev
 
 
 class LinkedList(Generic[T]):
-
     def __init__(self) -> None:
         self.head = None
         self.length = 0
@@ -47,8 +38,9 @@ class LinkedList(Generic[T]):
         self.length += 1
         n = ListNode(item)
         curr, prev = self.__getAt(index)
-        prev.next = n
-        n.next = curr
+        if curr and prev:
+            prev.next = n
+            n.next = curr
 
     def append(self, item: T) -> None:
         n = ListNode(item)
@@ -68,22 +60,24 @@ class LinkedList(Generic[T]):
         if self.length == 0:
             return None
 
-        # check head
-        if self.head.val == item:
+        # Could it be head?
+        if self.head and self.head.val == item:
             self.length -= 1
             v = self.head.val
             self.head = self.head.next
             return v
+        # If it's not, but length is one...
         elif self.length == 1:
             return None
 
-        # scan list for value
+        # Scan list for value
         curr, prev = self.head, None
         while curr and curr.val != item:
             prev = curr
             curr = curr.next
 
-        if curr is None:
+        # Not found
+        if curr is None or prev is None:
             return None
         else:
             self.length -= 1
@@ -96,18 +90,20 @@ class LinkedList(Generic[T]):
 
     def removeAt(self, index: int) -> Optional[T]:
         if index >= self.length or index < 0:
-            raise IndexError(f"Removal out of bounds. Index {index} is outside {self.length}", index, self.length)
+            raise IndexError(f"Removal out of bounds. Index {index} is outside of length: {self.length}")
 
         self.length -= 1
         if self.length == 0:
             self.head = None
 
         curr, prev = self.__getAt(index)
-        prev.next = curr.next
+        if curr and prev:
+            prev.next = curr.next
+            # free mem
+            curr.next = None
+            return curr.val
 
-        # free mem
-        curr.next = None
-        return curr.val
+        return None
 
     def get(self, index: int) -> Optional[T]:
         node = self.__getAt(index)[0]
@@ -123,8 +119,15 @@ class LinkedList(Generic[T]):
         return curr, prev
 
 
-class DoublyLinkedList(Generic[T]):
+# Definition for doubly-linked list.
+class DoubleListNode(Generic[T]):
+    def __init__(self, val: T = 0, next: Optional["DoubleListNode[T]"] = None, prev: Optional["DoubleListNode[T]"] = None):
+        self.val = val
+        self.next = next
+        self.prev = prev
 
+
+class DoublyLinkedList(Generic[T]):
     def __init__(self) -> None:
         self.head = self.tail = None
         self.length = 0
@@ -153,11 +156,15 @@ class DoublyLinkedList(Generic[T]):
 
         self.length += 1
         curr = self.__getAt(index)
-        n = DoubleListNode(item)
-        n.next = curr
-        n.prev = curr.prev
-        curr.prev.next = n
-        curr.prev = n
+
+        if curr:
+            n = DoubleListNode(item)
+            n.next = curr
+
+            if curr.prev:
+                n.prev = curr.prev
+                curr.prev.next = n
+                curr.prev = n
 
     def append(self, item: T) -> None:
         n = DoubleListNode(item)
@@ -173,7 +180,7 @@ class DoublyLinkedList(Generic[T]):
     def remove(self, item: T) -> Optional[T]:
         curr = self.head
         for _ in range(self.length):
-            if curr and curr.val == item:
+            if curr and curr.val == item or not curr:
                 break
             curr = curr.next
 
@@ -187,7 +194,7 @@ class DoublyLinkedList(Generic[T]):
         node = self.__getAt(index)
         return node.val if node else None
 
-    def __getAt(self, index: int) -> Optional[ListNode[T]]:
+    def __getAt(self, index: int) -> Optional[DoubleListNode[T]]:
         curr = self.head
         for _ in range(index):
             if curr:

@@ -1,5 +1,5 @@
 import unittest
-from packages.ds.Stack import Stack
+from packages.dsa.Stack import Stack
 
 
 class TestStack(unittest.TestCase):

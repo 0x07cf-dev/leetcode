@@ -1,5 +1,5 @@
 import unittest
-from packages.ds.LinkedList import LinkedList, DoublyLinkedList
+from packages.dsa.LinkedList import LinkedList, DoublyLinkedList
 
 '''
 class TestLinkedList(unittest.TestCase):

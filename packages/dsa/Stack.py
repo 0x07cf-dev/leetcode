@@ -1,25 +1,25 @@
 from typing import Optional, TypeVar, Generic
-from packages.ds.LinkedList import ListNode
+from packages.dsa.LinkedList import ListNode
 T = TypeVar("T")
 
 
-class Queue(Generic[T]):
+class Stack(Generic[T]):
     def __init__(self) -> None:
-        self.head = self.tail = None
+        self.head = None
         self.length = 0
 
-    def enqueue(self, item: T) -> None:
+    def push(self, item: T) -> None:
         n = ListNode(item)
 
         self.length += 1
-        if not self.tail:
-            self.head = self.tail = n
+        if not self.head:
+            self.head = n
             return
 
-        self.tail.next = n
-        self.tail = n
+        n.next = self.head
+        self.head = n
 
-    def deque(self) -> Optional[T]:
+    def pop(self) -> Optional[T]:
         if not self.head:
             return None
 
