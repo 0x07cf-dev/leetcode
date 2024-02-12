@@ -1,9 +1,5 @@
 # This will be my Python playground. I can only learn syntax by doing.
 
-from typing import Optional
-from packages.dsa.LinkedList import ListNode
-from collections import deque
-
 
 class Solution:
 
@@ -40,11 +36,9 @@ class Solution:
         return len(stack) == 0
 
     # 225. Implement Stack using Queues
-    # TODO: we can do better than this... feels like cheating
     class MyStack:
-
         def __init__(self):
-            self.queue = deque()
+            self.queue = []
 
         def push(self, x: int) -> None:
             self.queue.append(x)
@@ -52,10 +46,10 @@ class Solution:
             n = self.size()
             if n > 1:
                 for _ in range(n - 1):
-                    self.queue.append(self.queue.popleft())
+                    self.queue.append(self.queue.pop(0))
 
         def pop(self) -> int:
-            return self.queue.popleft()
+            return self.queue.pop(0)
 
         def top(self) -> int:
             return self.queue[0]
@@ -68,7 +62,6 @@ class Solution:
 
     # 232. Implement Queue using Stacks
     class MyQueue:
-
         def __init__(self):
             self.stack = []
             self.s = []
@@ -90,36 +83,13 @@ class Solution:
         def empty(self) -> bool:
             return not self.stack
 
-    '''TODO: 705. Design HashSet
-    class MyHashSet:
 
-        def __init__(self):
-            pass
-
-        def add(self, key: int) -> None:
-            pass
-
-        def remove(self, key: int) -> None:
-            pass
-
-        def contains(self, key: int) -> bool:
-            pass
-
-    TODO: 706. Design HashMap
-    class MyHashMap:
-
-        def __init__(self):
-            pass
-
-        def put(self, key: int, value: int) -> None:
-            pass
-
-        def get(self, key: int) -> int:
-            pass
-
-        def remove(self, key: int) -> None:
-            pass'''
-
+'''
+TODO:   622. Design Circular Queue
+        641. Design Circular Deque
+        705. Design HashSet
+        706. Design HashMap
+'''
 
 if __name__ == "__main__":
     print("Why did you wake me up?")

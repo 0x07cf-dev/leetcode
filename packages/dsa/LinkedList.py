@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, TypeVar, Generic
+from typing import Optional, TypeVar, Generic, Tuple
 T = TypeVar("T")
 
 
@@ -36,9 +36,10 @@ class LinkedList(Generic[T]):
             return
 
         self.length += 1
-        n = ListNode(item)
         curr, prev = self.__getAt(index)
+
         if curr and prev:
+            n = ListNode(item)
             prev.next = n
             n.next = curr
 
@@ -57,53 +58,19 @@ class LinkedList(Generic[T]):
         curr.next = n
 
     def remove(self, item: T) -> Optional[T]:
-        if self.length == 0:
-            return None
-
-        # Could it be head?
-        if self.head and self.head.val == item:
-            self.length -= 1
-            v = self.head.val
-            self.head = self.head.next
-            return v
-        # If it's not, but length is one...
-        elif self.length == 1:
-            return None
-
-        # Scan list for value
         curr, prev = self.head, None
         while curr and curr.val != item:
             prev = curr
             curr = curr.next
 
-        # Not found
-        if curr is None or prev is None:
-            return None
-        else:
-            self.length -= 1
-            v = curr
-            prev.next = curr.next
-
-            # free mem
-            v.next = None
-            return v.val
+        return self.__remove_node(curr, prev)
 
     def removeAt(self, index: int) -> Optional[T]:
         if index >= self.length or index < 0:
             raise IndexError(f"Removal out of bounds. Index {index} is outside of length: {self.length}")
 
-        self.length -= 1
-        if self.length == 0:
-            self.head = None
-
-        curr, prev = self.__getAt(index)
-        if curr and prev:
-            prev.next = curr.next
-            # free mem
-            curr.next = None
-            return curr.val
-
-        return None
+        node, prev = self.__getAt(index)
+        return self.__remove_node(node, prev)
 
     def get(self, index: int) -> Optional[T]:
         node = self.__getAt(index)[0]
@@ -117,6 +84,26 @@ class LinkedList(Generic[T]):
                 curr = curr.next
 
         return curr, prev
+
+    def __remove_node(self, node: Optional[ListNode], prev: Optional[ListNode]) -> Optional[T]:
+        if not node or (prev and prev.next != node):
+            return None
+
+        self.length -= 1
+        v = node.val
+
+        if self.length == 0:
+            self.head = None
+
+        if prev:
+            prev.next = node.next
+
+        if node == self.head:
+            self.head = node.next
+
+        # free mem
+        node.next = node = None
+        return v
 
 
 # Definition for doubly-linked list.
@@ -179,16 +166,17 @@ class DoublyLinkedList(Generic[T]):
 
     def remove(self, item: T) -> Optional[T]:
         curr = self.head
-        for _ in range(self.length):
-            if curr and curr.val == item or not curr:
-                break
+        while curr and curr.val != item:
             curr = curr.next
 
-        return self.__remove_node(curr) if curr else None
+        return self.__remove_node(curr)
 
     def removeAt(self, index: int) -> Optional[T]:
+        if index > self.length or index < 0:
+            raise IndexError(f"Removal out of bounds. Index {index} is outside of length: {self.length}")
+
         node = self.__getAt(index)
-        return self.__remove_node(node) if node else None
+        return self.__remove_node(node)
 
     def get(self, index: int) -> Optional[T]:
         node = self.__getAt(index)
@@ -202,8 +190,12 @@ class DoublyLinkedList(Generic[T]):
 
         return curr
 
-    def __remove_node(self, node: DoubleListNode) -> Optional[T]:
+    def __remove_node(self, node: Optional[DoubleListNode]) -> Optional[T]:
+        if not node:
+            return None
+
         self.length -= 1
+        v = node.val
 
         if self.length == 0:
             self.head = self.tail = None
@@ -221,5 +213,5 @@ class DoublyLinkedList(Generic[T]):
             self.tail = node.prev
 
         # free mem
-        node.prev = node.next = None
-        return node.val
+        node.prev = node.next = node = None
+        return v

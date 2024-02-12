@@ -1,6 +1,5 @@
 from typing import Optional, TypeVar
 from packages.dsa.Tree import TreeNode
-T = TypeVar("T")
 
 
 class Solution:
@@ -9,11 +8,11 @@ class Solution:
     def inorderTraversal(self, root: Optional[TreeNode]) -> list[int]:
         visited = []
 
-        def dfs(r: Optional[TreeNode[T]]):
-            if r:
-                dfs(r.left)
-                visited.append(r.val)
-                dfs(r.right)
+        def dfs(root):
+            if root:
+                dfs(root.left)
+                visited.append(root.val)
+                dfs(root.right)
 
         dfs(root)
         return visited

@@ -1,7 +1,7 @@
 import unittest
 from packages.dsa.LinkedList import LinkedList, DoublyLinkedList
 
-'''
+
 class TestLinkedList(unittest.TestCase):
 
     def setUp(self):
@@ -23,12 +23,6 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(self.linked_list.length, 2)
         with self.assertRaises(IndexError):
             self.linked_list.insertAt(5, 15)
-
-    def test_remove(self):
-        self.assertIsNone(self.linked_list.remove(5))
-        self.linked_list.append(5)
-        self.assertEqual(self.linked_list.remove(5), 5)
-        self.assertIsNone(self.linked_list.get(0))
 
     def test_remove(self):
         with self.assertRaises(IndexError):
@@ -136,10 +130,9 @@ class TestDoublyLinkedList(unittest.TestCase):
         self.dll.append(10)
         self.assertEqual(self.dll.get(1), 10)
         self.assertIsNone(self.dll.get(2))
-'''
 
 
-class TestLinkedList(unittest.TestCase):
+class TestLinkedList2(unittest.TestCase):
 
     def setUp(self):
         self.linked_list = LinkedList()
@@ -183,7 +176,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(self.linked_list.get(0), 10)
 
 
-class TestDoublyLinkedList(unittest.TestCase):
+class TestDoublyLinkedList2(unittest.TestCase):
 
     def setUp(self):
         self.dll = DoublyLinkedList()
